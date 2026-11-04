@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="Guía autónoma del caso Olist: importancia empresarial de anticipar retrasos, flujo de trabajo, muestra individual y diccionario de 28 variables." name="description"/>
+<title>Laboratorio 1 - Reto tercer corte | Predicción de entregas tardías en Olist</title>
+<style>
+
+
+:root {
+  --ink: rgba(0, 0, 0, .84);
+  --muted: rgba(0, 0, 0, .56);
+  --line: rgba(0, 0, 0, .12);
+  --soft: #f7f7f7;
+  --link: #1a8917;
+  --serif: medium-content-serif-font, Georgia, Cambria, "Times New Roman", Times, serif;
+  --sans: sohne, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --display: gt-super, Georgia, Cambria, "Times New Roman", Times, serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: #fff;
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 21px;
+  line-height: 1.58;
+  letter-spacing: -.003em;
+}
+
+.topbar {
+  border-bottom: 1px solid var(--line);
+  font-family: var(--sans);
+}
+
+.topbar-inner {
+  width: min(1080px, calc(100% - 40px));
+  min-height: 58px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.site-title {
+  color: #242424;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+.site-meta {
+  color: var(--muted);
+  font-size: 13px;
+  letter-spacing: 0;
+}
+
+article {
+  width: min(680px, calc(100% - 40px));
+  margin: 58px auto 92px;
+}
+
+.eyebrow {
+  margin: 0 0 12px;
+  color: #8250df;
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+}
+
+h1 {
+  margin: 0;
+  color: #242424;
+  font-family: var(--display);
+  font-size: clamp(42px, 7vw, 54px);
+  font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: -.03em;
+}
+
+.subtitle {
+  margin: 18px 0 16px;
+  color: rgba(0, 0, 0, .62);
+  font-family: var(--sans);
+  font-size: 20px;
+  line-height: 1.45;
+  letter-spacing: 0;
+}
+
+.byline {
+  margin: 0 0 42px;
+  color: var(--muted);
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.5;
+  letter-spacing: 0;
+}
+
+.byline span + span::before {
+  content: " | ";
+  color: rgba(0, 0, 0, .35);
+}
+
+p {
+  margin: 0 0 26px;
+}
+
+.lead {
+  font-size: 21px;
+}
+
+h2 {
+  margin: 52px 0 18px;
+  color: #242424;
+  font-family: var(--sans);
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -.015em;
+}
+
+h3 {
+  margin: 36px 0 12px;
+  color: #242424;
+  font-family: var(--sans);
+  font-size: 21px;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: -.01em;
+}
+
+ul, ol {
+  margin: 0 0 26px;
+  padding-left: 26px;
+}
+
+li {
+  margin: 8px 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: rgba(0, 0, 0, .35);
+  text-underline-offset: 2px;
+}
+
+a:hover {
+  text-decoration-color: currentColor;
+}
+
+code {
+  padding: 2px 5px;
+  border-radius: 3px;
+  background: #f2f2f2;
+  color: #242424;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: .82em;
+}
+
+.note {
+  margin: 30px 0;
+  padding: 16px 20px;
+  border-left: 3px solid #242424;
+  background: var(--soft);
+}
+
+.note p {
+  margin: 0;
+}
+
+.definition {
+  margin: 30px 0;
+  padding: 18px 20px;
+  border: 1px solid var(--line);
+}
+
+.definition-title {
+  margin-bottom: 8px;
+  color: #242424;
+  font-family: var(--sans);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0;
+}
+
+.definition p {
+  margin: 0;
+}
+
+table {
+  width: 100%;
+  margin: 26px 0 34px;
+  border-collapse: collapse;
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.45;
+  letter-spacing: 0;
+}
+
+th, td {
+  padding: 12px 9px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+
+th {
+  color: #242424;
+  font-weight: 600;
+}
+
+figure {
+  margin: 34px 0 38px;
+  page-break-inside: avoid;
+}
+
+figure img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+figcaption {
+  margin-top: 10px;
+  color: var(--muted);
+  font-family: var(--sans);
+  font-size: 13px;
+  line-height: 1.45;
+  letter-spacing: 0;
+}
+
+hr {
+  margin: 52px 0;
+  border: 0;
+  border-top: 1px solid var(--line);
+}
+
+.references {
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.55;
+  letter-spacing: 0;
+}
+
+.references li {
+  margin-bottom: 14px;
+}
+
+.citation {
+  font-family: var(--sans);
+  font-size: .78em;
+  text-decoration: none;
+  vertical-align: baseline;
+  white-space: nowrap;
+}
+
+.citation:hover {
+  text-decoration: underline;
+}
+
+.backref {
+  margin-left: 5px;
+  color: var(--muted);
+  text-decoration: none;
+}
+
+:target {
+  scroll-margin-top: 24px;
+}
+
+footer {
+  border-top: 1px solid var(--line);
+  padding: 28px 20px 44px;
+  color: var(--muted);
+  font-family: var(--sans);
+  font-size: 13px;
+  line-height: 1.5;
+  letter-spacing: 0;
+}
+
+footer div {
+  width: min(680px, 100%);
+  margin: 0 auto;
+}
+
+@media (max-width: 640px) {
+  body {
+    font-size: 19px;
+    line-height: 1.55;
+  }
+
+  article {
+    margin-top: 42px;
+  }
+
+  .subtitle {
+    font-size: 18px;
+  }
+
+  h2 {
+    font-size: 25px;
+  }
+}
+
+.references a {
+  color: #0969da;
+  text-decoration: underline;
+  text-decoration-color: #0969da;
+  text-underline-offset: 2px;
+}
+
+.references a:hover {
+  color: #0550ae;
+  text-decoration-color: #0550ae;
+}
+
+
+
+
+/* Elementos funcionales de la guía S12 */
+pre {
+  margin: 22px 0 28px;
+  padding: 18px 20px;
+  overflow-x: auto;
+  background: #f7f7f7;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  color: #242424;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 13.5px;
+  line-height: 1.65;
+}
+pre code { padding: 0; border-radius: 0; background: none; font-size: inherit; }
+:not(pre) > code { overflow-wrap: anywhere; word-break: break-word; }
+.table-wrap { width: 100%; overflow-x: auto; }
+.table-wrap table { min-width: 560px; }
+caption { text-align: left; font-size: 13px; color: var(--muted); padding-bottom: 10px; }
+small, .small { font-family: var(--sans); font-size: 14px; color: var(--muted); }
+.mini-nav { font-family: var(--sans); font-size: 15px; line-height: 1.6; margin: 28px 0 30px; }
+.mini-nav a { text-decoration-color: rgba(0,0,0,.25); }
+.dictionary th:first-child, .dictionary td:first-child { white-space: nowrap; }
+.dictionary td { word-break: normal; overflow-wrap: anywhere; }
+section { scroll-margin-top: 25px; }
+@media print {
+  article { margin: 20px auto; }
+  h2, h3 { break-after: avoid; }
+  tr { break-inside: avoid; }
+  a { color: #242424; }
+}
+
+
+
+/* Versión corregida: las tablas se leen como fichas en pantallas pequeñas. */
+@media (max-width: 760px) {
+  .table-wrap { width: 100%; overflow-x: visible; }
+  .table-wrap table { min-width: 0 !important; width: 100% !important; margin: 12px 0 32px; }
+  table thead { display: none; }
+  table, table tbody, table tr, table td { display: block; width: 100%; }
+  table tbody tr {
+    margin: 0 0 14px;
+    padding: 5px 13px;
+    border: 1px solid var(--line);
+    border-radius: 5px;
+    background: #fff;
+  }
+  table tbody td {
+    border: 0;
+    border-bottom: 1px solid var(--line);
+    padding: 10px 0;
+    font-size: 14px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+    word-break: normal;
+    white-space: normal !important;
+  }
+  table tbody td:last-child { border-bottom: 0; }
+  table tbody td::before {
+    display: block;
+    content: attr(data-label);
+    font-family: var(--sans);
+    font-size: 11px;
+    line-height: 1.4;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #606060;
+    padding-bottom: 4px;
+  }
+  table.dictionary tbody td:first-child code { font-weight: 650; font-size: 13px; }
+  pre { font-size: 12px; padding: 14px 11px; }
+  .mini-nav { line-height: 1.9; }
+}
+@media print {
+  @page { size: A4; margin: 16mm 17mm 17mm; }
+  html, body { background: white !important; }
+  body { font-size: 13px; line-height: 1.48; }
+  article { margin: 0 auto; width: 100%; max-width: 680px; }
+  h1 { font-size: 33px; }
+  h2 { font-size: 21px; margin: 24px 0 9px; }
+  h3 { font-size: 16px; margin: 18px 0 6px; }
+  p, ul, ol { margin-bottom: 12px; }
+  .subtitle { font-size: 16px; }
+  .lead { font-size: 15px; }
+  .byline { margin-bottom: 25px; }
+  .table-wrap { overflow: visible; }
+  .table-wrap table { min-width: 0; width: 100%; font-size: 10px; line-height: 1.32; margin: 12px 0 20px; }
+  th,td { padding: 6px 7px; }
+  .dictionary td:first-child { white-space: normal; }
+  .dictionary td:first-child code { font-size: 9.2px; overflow-wrap: anywhere; word-break: break-word; }
+  code { overflow-wrap: anywhere; }
+  table tbody tr { break-inside: avoid; }
+  section { break-before: auto; }
+  .topbar, footer { display: none; }
+  .note,.definition { margin: 16px 0; padding: 11px 13px; }
+}
+
+/* Gráficos vectoriales de lectura autónoma, integrados sin archivos externos */
+.case-figure { margin: 32px 0 39px; }
+.chart-frame { padding: 11px 6px 0; border: 1px solid var(--line); background: #fff; }
+.chart-frame svg { display: block; width: 100%; height: auto; }
+.case-figure figcaption { font-size: 13px; line-height: 1.55; margin-top: 11px; }
+.fig-number { color: #242424; font-weight: 600; }
+@media (max-width: 600px) { .chart-frame {padding: 5px 1px 0;} .case-figure figcaption { font-size: 12px; } }
+@media print { .case-figure { break-inside: avoid; } }
+
+.chart-mobile { display: none !important; }
+@media (max-width: 600px) { .chart-wide { display:none !important; } .chart-mobile { display:block !important; } }
+</style>
+</head>
+<body>
+<header class="topbar"><div class="topbar-inner"><div class="site-title">Data Analytics</div><div class="site-meta">Ingeniería de Sistemas, 2026-2</div></div></header>
+<article>
+<p class="eyebrow">Semana 12. Guía técnica y diccionario de variables</p>
+<h1>LABORATORIO 1 - RETO TERCER CORTE:<br>Predicción de entregas tardías en comercio electrónico</h1>
+<p class="subtitle">Contextualización del problema logístico, integración de fuentes de información, caracterización de variables y lineamientos metodológicos para el desarrollo de modelos predictivos supervisados.</p>
+<p class="byline"><span>Data Analytics ML Challenge, 2026-2 | Elias Buitrago Bolivar | Universidad Central</span></p>
+<p class="lead">Este caso de estudio utiliza transacciones reales de comercio electrónico para examinar un problema operativo: anticipar cuáles pedidos podrían entregarse después de la fecha prometida. La guía presenta el contexto empresarial, el flujo técnico, la estructura de datos y el significado de las variables disponibles para la predicción.</p>
+<p>El curso adopta un flujo de trabajo inspirado en equipos de analítica: cada estudiante utiliza un repositorio individual, registra sus cambios, ejecuta experimentos reproducibles y entrega resultados que puedan ser revisados. No se requiere configurar una infraestructura de producción ni utilizar un archivo ZIP dentro de Colab.</p>
+<div class="note"><p>Antes de empezar: el profesor debe compartir el enlace del repositorio base o de la asignación en GitHub Classroom y el ID personal (01 a 30).</p></div>
+<p class="mini-nav">Contenido: <a href="#contexto">relevancia del problema</a> | <a href="#flujo">flujo de trabajo</a> | <a href="#repositorio">repositorio</a> | <a href="#datos">datos de Olist</a> | <a href="#muestra">muestra individual</a> | <a href="#diccionario">diccionario de variables</a> | <a href="#verificacion">verificación y entrega</a></p>
+<section id="contexto">
+<h2>¿Por qué anticipar una entrega tardía?</h2>
+<p>Una compra en línea incorpora una promesa de entrega. Si la empresa identifica con anticipación los pedidos con riesgo de incumplirla, puede priorizar revisiones logísticas, informar oportunamente al cliente o coordinar acciones con los operadores de transporte. Estas intervenciones tienen un costo y deben justificarse mediante datos.</p>
+<p>Olist publicó un conjunto anonimizado de alrededor de 100.000 pedidos realizados entre 2016 y 2018 en distintos mercados de Brasil. Registra pedidos, productos, precios, fletes, medios de pago, ubicación de clientes y vendedores, fechas de entrega y reseñas. Esta combinación permite estudiar tanto la predicción del retraso como su relación con la experiencia posterior del comprador <a class="citation" href="#ref-1">[1]</a>.</p>
+<figure class="case-figure" id="figura-1"><div class="chart-frame"><svg aria-labelledby="fig-titulo-1 fig-desc-1" class="chart-wide" role="img" viewBox="0 0 680 248" xmlns="http://www.w3.org/2000/svg">
+<title id="fig-titulo-1">Pedidos entregados a tiempo y con retraso</title>
+<desc id="fig-desc-1">De 98 470 pedidos entregados, 90 644 corresponden a entregas puntuales y 7 826 a tardías, aproximadamente 92,1 y 7,9 por ciento.</desc>
+<rect fill="#ffffff" height="248" width="680" x="0" y="0"></rect>
+<text style="font:600 20px Helvetica,Arial,sans-serif;fill:#242424" x="8" y="32">Un problema minoritario, pero relevante</text>
+<text style="font:14px Helvetica,Arial,sans-serif;fill:#5e5e5e" x="8" y="61">98.470 pedidos entregados en el análisis de referencia</text>
+<rect fill="#ededed" height="54" rx="4" width="664" x="8" y="89"></rect>
+<path d="M12,89 H617 V143 H12 Q8,143 8,139 V93 Q8,89 12,89 Z" fill="#4a695c"></path>
+<path d="M617,89 H668 Q672,89 672,93 V139 Q672,143 668,143 H617 Z" fill="#bf6a52"></path>
+<text style="font:600 17px Helvetica,Arial,sans-serif;fill:white;text-anchor:middle" x="310" y="122">92,1 %</text>
+<text style="font:600 13px Helvetica,Arial,sans-serif;fill:white;text-anchor:middle" x="645" y="122">7,9 %</text>
+<rect fill="#4a695c" height="12" rx="2" width="12" x="9" y="169"></rect>
+<text style="font:14px Helvetica,Arial,sans-serif;fill:#242424" x="30" y="180">A tiempo: 90.644</text>
+<rect fill="#bf6a52" height="12" rx="2" width="12" x="327" y="169"></rect>
+<text style="font:14px Helvetica,Arial,sans-serif;fill:#242424" x="348" y="180">Fuera de plazo: 7.826</text>
+<text style="font:13px Helvetica,Arial,sans-serif;fill:#666" x="8" y="217">Se considera tardío un pedido entregado después del día estimado.</text>
+</svg><svg aria-labelledby="mt1 md1" class="chart-mobile" role="img" viewBox="0 0 350 244" xmlns="http://www.w3.org/2000/svg">
+<title id="mt1">Estado de entregas en Olist</title><desc id="md1">El 92,1 % llegó a tiempo y el 7,9 % llegó tarde, según un análisis publicado de 98 470 pedidos.</desc>
+<rect fill="white" height="244" width="350"></rect><text style="font:600 17px Helvetica,Arial,sans-serif;fill:#242424" x="10" y="24">Entregas puntuales y tardías</text>
+<text style="font:12px Helvetica,Arial,sans-serif;fill:#666" x="10" y="48">98.470 pedidos en el análisis de referencia</text>
+<text style="font:14px Helvetica,Arial,sans-serif;fill:#242424" x="10" y="84">A tiempo · 90.644</text>
+<rect fill="#efefef" height="35" rx="2" width="325" x="10" y="95"></rect><rect fill="#4a695c" height="35" rx="2" width="299" x="10" y="95"></rect>
+<text style="font:600 14px Helvetica,Arial,sans-serif;fill:white" x="265" y="118">92,1 %</text>
+<text style="font:14px Helvetica,Arial,sans-serif;fill:#242424" x="10" y="170">Fuera de plazo · 7.826</text>
+<rect fill="#efefef" height="35" rx="2" width="325" x="10" y="181"></rect><rect fill="#bf6a52" height="35" rx="2" width="26" x="10" y="181"></rect>
+<text style="font:600 14px Helvetica,Arial,sans-serif;fill:#242424" x="45" y="204">7,9 %</text>
+</svg></div><figcaption><span class="fig-number">Figura 1.</span> Pedidos puntuales y tardíos según un análisis externo del conjunto Olist. El recuento responde a los filtros utilizados por su autor, que pueden diferir de los empleados en este curso. Elaboración gráfica propia a partir de los resultados publicados en <a href="#ref-3">[3]</a>.</figcaption></figure>
+<p>Un porcentaje cercano al 8 % puede parecer pequeño, pero representa miles de entregas con una fecha comprometida incumplida. Además, un modelo que siempre prediga “a tiempo” obtendría una exactitud elevada y, aun así, no identificaría los pedidos que necesitan atención. Por eso el ejercicio incluye Recall, Precision, F1 y el costo de las decisiones equivocadas.</p>
+<figure class="case-figure" id="figura-2"><div class="chart-frame"><svg aria-labelledby="fig-titulo-2 fig-desc-2" class="chart-wide" role="img" viewBox="0 0 680 330" xmlns="http://www.w3.org/2000/svg">
+<title id="fig-titulo-2">Calificaciones de una estrella según puntualidad</title>
+<desc id="fig-desc-2">Entre pedidos con reseña, 6,6 por ciento de los entregados a tiempo recibieron una estrella y 46,2 por ciento de los entregados tarde recibieron una estrella.</desc>
+<rect fill="#ffffff" height="330" width="680"></rect>
+<text style="font:600 20px Helvetica,Arial,sans-serif;fill:#242424" x="8" y="30">Reseñas de una estrella según la entrega</text>
+<text style="font:14px Helvetica,Arial,sans-serif;fill:#5e5e5e" x="8" y="59">Porcentaje de pedidos con la calificación mínima</text>
+<text style="font:15px Helvetica,Arial,sans-serif;fill:#242424" x="8" y="117">Entregados a tiempo</text>
+<rect fill="#f0f0f0" height="42" rx="3" width="565" x="8" y="133"></rect>
+<rect fill="#4a695c" height="42" rx="3" width="74.6" x="8" y="133"></rect>
+<text style="font:600 17px Helvetica,Arial,sans-serif;fill:#242424" x="93" y="160">6,6 %</text>
+<text style="font:15px Helvetica,Arial,sans-serif;fill:#242424" x="8" y="229">Entregados fuera de plazo</text>
+<rect fill="#f0f0f0" height="42" rx="3" width="565" x="8" y="245"></rect>
+<rect fill="#bf6a52" height="42" rx="3" width="522.1" x="8" y="245"></rect>
+<text style="font:600 17px Helvetica,Arial,sans-serif;fill:#242424" x="536" y="272">46,2 %</text>
+<text style="font:12px Helvetica,Arial,sans-serif;fill:#666" x="8" y="315">Escala visual común: 0 a 50 %. Solo pedidos que recibieron reseña.</text>
+</svg><svg aria-labelledby="mt2 md2" class="chart-mobile" role="img" viewBox="0 0 350 244" xmlns="http://www.w3.org/2000/svg">
+<title id="mt2">Reseñas con una estrella según puntualidad</title><desc id="md2">El 6,6 por ciento de los pedidos puntuales reseñados y el 46,2 por ciento de los tardíos reseñados recibieron una estrella.</desc>
+<rect fill="white" height="244" width="350"></rect>
+<text style="font:600 16px Helvetica,Arial,sans-serif;fill:#242424" x="10" y="24">Reseñas de una estrella</text>
+<text style="font:12px Helvetica,Arial,sans-serif;fill:#666" x="10" y="48">Solo pedidos con reseña · escala 0–50 %</text>
+<text style="font:14px Helvetica,Arial,sans-serif;fill:#242424" x="10" y="84">Entregados a tiempo</text>
+<rect fill="#efefef" height="35" rx="2" width="315" x="10" y="95"></rect><rect fill="#4a695c" height="35" rx="2" width="41.6" x="10" y="95"></rect>
+<text style="font:600 14px Helvetica,Arial,sans-serif;fill:#242424" x="61" y="118">6,6 %</text>
+<text style="font:14px Helvetica,Arial,sans-serif;fill:#242424" x="10" y="170">Entregados fuera de plazo</text>
+<rect fill="#efefef" height="35" rx="2" width="315" x="10" y="181"></rect><rect fill="#bf6a52" height="35" rx="2" width="291.1" x="10" y="181"></rect>
+<text style="font:600 14px Helvetica,Arial,sans-serif;fill:white" x="251" y="204">46,2 %</text>
+</svg></div><figcaption><span class="fig-number">Figura 2.</span> Porcentaje de reseñas de una estrella entre pedidos entregados a tiempo y fuera de plazo, usando solo los pedidos con reseña del análisis de referencia. Es una asociación descriptiva, no una estimación causal. Elaboración gráfica propia a partir de <a href="#ref-3">[3]</a>.</figcaption></figure>
+<p>El contraste entre ambas proporciones sugiere que el cumplimiento de la promesa de entrega merece atención. Sin embargo, una mala calificación también puede deberse al producto, al precio o al servicio recibido. No sería correcto atribuir toda la diferencia exclusivamente al retraso. La investigación académica sobre la última milla documenta la importancia de la calidad y la puntualidad del servicio para la experiencia de compra, y ofrece un contexto adicional para el caso <a class="citation" href="#ref-2">[2]</a>.</p>
+<div class="definition"><div class="definition-title">Pregunta central del caso</div><p>Con los datos que una empresa razonablemente conoce cuando se confirma una compra, ¿qué pedidos presentan mayor riesgo de llegar tarde y qué decisiones se justificarían con esas predicciones?</p></div>
+</section><section id="flujo">
+<h2>El trabajo comienza en el repositorio</h2>
+<p>Un repositorio de GitHub conserva los archivos y los cambios del proyecto. El cuaderno de análisis es el espacio de experimentación; GitHub permite registrar el avance y consultar las evidencias. En este laboratorio el trabajo es individual, aunque todas las personas estudien el mismo problema empresarial.</p>
+<ol>
+<li><strong>Acceda a su repositorio.</strong> Utilice el enlace que indique el profesor.</li>
+<li><strong>Abra el cuaderno de análisis.</strong> Desde GitHub, abra <code>notebooks/</code> y seleccione el archivo <code>.ipynb</code> de la semana 12 en Google Colab. También puede ejecutarse en un entorno Jupyter compatible con las dependencias de Python instaladas.</li>
+<li><strong>Ingrese su ID.</strong> Use el identificador numérico asignado por el profesor. El ID 01 se introduce como <code>1</code>.</li>
+<li><strong>Desarrolle el reto.</strong> Complete las cuatro actividades identificadas en el cuaderno de análisis: modelo, métricas, análisis por segmentos y costo empresarial. Responda las tres preguntas de interpretación con sus propios resultados.</li>
+<li><strong>Compruebe y registre.</strong> Ejecute el cuaderno de análisis completo, verifique las aserciones, guarde el cuaderno de análisis y registre los cambios en GitHub. Luego incorpore el reporte JSON generado.</li>
+</ol>
+<p>El cuaderno de análisis incluye el código necesario para descargar, integrar y preparar los datos de Olist. Los estudiantes deben ejecutar estas etapas antes de iniciar las actividades de modelado predictivo. La preparación de los datos se mantiene durante las siguientes semanas para trabajar con las mismas variables, muestras y particiones. De esta manera, será posible comparar los resultados de los diferentes modelos y evaluar las mejoras obtenidas a lo largo del reto.</p>
+</section>
+<section id="repositorio">
+<h2>Una estructura común facilita la revisión</h2>
+<p>El repositorio individual mantiene una organización simple, similar a la que se utiliza en proyectos de analítica donde deben separarse los datos, los experimentos, el código reutilizable y los resultados.</p>
+<pre><code>data/
+  raw/          # datos originales, no se publican
+  processed/    # datos preparados, se regeneran
+notebooks/
+  (archivo de análisis .ipynb)
+src/            # funciones reutilizables de siguientes retos
+reports/
+  S12_resultados_ID_01.json
+README.md</code></pre>
+<p>La carpeta <code>src/</code> queda disponible para módulos que se construyan más adelante; en el laboratorio S12 no es necesario crear un archivo Python externo. Los CSV de Olist se leen desde una fuente pública y no deben agregarse como archivos grandes al repositorio. Tampoco se publican muestras completas con 35.000 pedidos.</p>
+<div class="definition"><div class="definition-title">¿Qué es un commit?</div><p>Es un registro de cambios realizado en el repositorio. Permite consultar qué se modificó y cuándo. Para la semana 12 conviene registrar, como mínimo, un avance del entrenamiento y otro de la evaluación e interpretación, con mensajes descriptivos como <code>S12: modelo base</code> y <code>S12: métricas y conclusiones</code>.</p></div>
+<p>Cuando trabaje desde Colab, compruebe que el cuaderno de análisis final quede guardado en <code>notebooks/</code> del repositorio individual. Si genera el reporte en el entorno temporal de Colab, descárguelo y súbalo a <code>reports/</code> antes de cerrar la sesión.</p>
+</section>
+<section id="datos">
+<h2>Antes de modelar hay que entender los pedidos</h2>
+<p>El caso se basa en <em>Brazilian E-Commerce Public Dataset by Olist</em>, un conjunto de datos público de comercio electrónico brasileño. Los archivos de trabajo se toman de una copia de GitHub cuya revisión permanece fija. La procedencia y la revisión fija de los datos se consignan al final de esta lectura.</p>
+<div class="definition"><div class="definition-title">Unidad de análisis: un pedido</div><p>Cada fila de la tabla final representa un pedido identificado mediante <code>order_id</code>. Un pedido puede contener varios productos, vendedores o registros de pago. Por ello, esas tablas deben resumirse por pedido antes de integrarse; de lo contrario, un mismo pedido podría quedar repetido y sesgar la evaluación.</p></div>
+<p>La preparación reúne siete archivos de Olist. No es necesario descargar cada archivo manualmente si la ejecución en Colab tiene acceso a la fuente indicada por el cuaderno de análisis.</p>
+<div class="table-wrap"><table class=""><thead><tr><th scope="col">Archivo original</th><th scope="col">Información que aporta</th><th scope="col">Unidad original</th></tr></thead><tbody><tr><td data-label="Archivo original"><code>olist_orders_dataset.csv</code></td><td data-label="Información que aporta">Estado del pedido, fechas de compra, estimación y entrega real.</td><td data-label="Unidad original">Pedido</td></tr><tr><td data-label="Archivo original"><code>olist_order_items_dataset.csv</code></td><td data-label="Información que aporta">Precios, fletes y vínculos con productos y vendedores.</td><td data-label="Unidad original">Ítem del pedido</td></tr><tr><td data-label="Archivo original"><code>olist_products_dataset.csv</code></td><td data-label="Información que aporta">Peso, dimensiones, fotos, descripción y categoría.</td><td data-label="Unidad original">Producto</td></tr><tr><td data-label="Archivo original"><code>olist_customers_dataset.csv</code></td><td data-label="Información que aporta">Ciudad y estado del cliente.</td><td data-label="Unidad original">Cliente asociado al pedido</td></tr><tr><td data-label="Archivo original"><code>olist_sellers_dataset.csv</code></td><td data-label="Información que aporta">Ciudad y estado del vendedor.</td><td data-label="Unidad original">Vendedor</td></tr><tr><td data-label="Archivo original"><code>olist_order_payments_dataset.csv</code></td><td data-label="Información que aporta">Pagos, importes, cuotas y medio de pago.</td><td data-label="Unidad original">Registro de pago</td></tr><tr><td data-label="Archivo original"><code>product_category_name_translation.csv</code></td><td data-label="Información que aporta">Traducción de categorías para facilitar la interpretación.</td><td data-label="Unidad original">Categoría</td></tr></tbody></table></div>
+<p>Para los pedidos con varios ítems se suman o resumen precios, fletes, pesos y dimensiones. Si existen varios vendedores o categorías, se utiliza el ítem de mayor precio como referencia para algunas variables categóricas. Si hay varios pagos, el medio principal se define por el pago de mayor importe. Estas decisiones mantienen una sola observación por pedido y deben conservarse entre semanas.</p>
+<h3>¿Qué estamos intentando predecir?</h3>
+<p>El objetivo es estimar, en el momento de la compra y confirmación del pago, si el pedido llegará después de la fecha prometida. La variable <code>is_late</code> vale 1 cuando la fecha efectiva de entrega es posterior al día estimado y 0 en caso contrario. Una entrega realizada durante el mismo día previsto se considera puntual.</p>
+<p>El ejemplo complementario de regresión utiliza <code>dias_entrega</code>, que representa los días transcurridos entre la compra y la entrega efectiva.</p>
+<div class="note"><p>Evitar fuga de información: <code>order_delivered_customer_date</code> y <code>dias_entrega</code> sirven para construir las variables objetivo, pero nunca se incorporan como predictores. Tampoco se incluyen como predictores la fecha real de despacho ni las reseñas posteriores a la entrega. Los datos de pago se utilizan bajo el supuesto didáctico de que la predicción se realiza después de confirmar el pago; en una empresa real habría que verificar su disponibilidad exacta.</p></div>
+<p>El conjunto de trabajo conserva únicamente los pedidos con estado <code>delivered</code> y fechas completas y coherentes. Por ello, las conclusiones del laboratorio no se pueden extrapolar directamente a pedidos cancelados o que continúan en tránsito.</p>
+</section>
+<section id="muestra">
+<h2>35.000 pedidos distintos según el ID de cada estudiante</h2>
+<p>Todos los estudiantes parten de los mismos archivos originales. El profesor asigna un ID del 01 al 30 y el cuaderno de análisis utiliza ese número para elegir una muestra de 35.000 pedidos reales. La selección también conserva aproximadamente la proporción de entregas tardías del conjunto preparado.</p>
+<p>Por ejemplo, con el ID <code>01</code>, el cuaderno de análisis recibe el entero <code>1</code> y utiliza la semilla numérica <code>1001</code>. Al repetir la ejecución con el mismo ID y la misma fuente de datos, se obtiene la misma muestra. El ID 02 utiliza otra semilla y, por tanto, otra selección. Las muestras pueden compartir pedidos: no se trata de dividir Olist en 30 conjuntos sin registros comunes.</p>
+<div class="table-wrap"><table class=""><thead><tr><th scope="col">Uso</th><th scope="col">Cantidad</th><th scope="col">Propósito</th></tr></thead><tbody><tr><td data-label="Uso">Entrenamiento (70 %)</td><td data-label="Cantidad">24.500</td><td data-label="Propósito">Ajustar el preprocesamiento y los modelos.</td></tr><tr><td data-label="Uso">Validación (15 %)</td><td data-label="Cantidad">5.250</td><td data-label="Propósito">Comparar alternativas y analizar errores en las semanas 12 a 15.</td></tr><tr><td data-label="Uso">Prueba final (15 %)</td><td data-label="Cantidad">5.250</td><td data-label="Propósito">Evaluar en la semana 16 el modelo elegido, sin usar esos pedidos para seleccionarlo.</td></tr></tbody></table></div>
+<p>Los modelos se ajustan con entrenamiento. La validación sirve para comparar alternativas y estudiar los errores. La prueba permanece sin utilizar para seleccionar modelos durante las semanas 12 a 15, y se emplea en la evaluación final del desafío integrador de la semana 16.</p>
+<p>El archivo JSON registra el ID, la semilla, la huella de la muestra y las métricas. Así, el profesor puede reproducir una entrega sin conocer datos personales del estudiante. La misma muestra, las mismas variables y las mismas particiones permiten comparar los experimentos de las semanas siguientes.</p>
+<p class="small">La partición aleatoria estratificada facilita la comparación didáctica, pero no equivale a una prueba prospectiva. En la semana 14 también se analizará qué cambia cuando la evaluación respeta el orden temporal de los pedidos.</p>
+</section>
+<section id="diccionario">
+<h2>Diccionario de las 28 variables predictoras</h2>
+<p>Una variable predictora es una característica que el modelo utiliza para calcular su estimación. El laboratorio trabaja con 24 numéricas y 4 categóricas, derivadas de las tablas descritas anteriormente. Las agrupamos por su significado empresarial para facilitar la interpretación del modelo.</p>
+<h3>Calendario y plazo prometido (6)</h3>
+<div class="table-wrap"><table class="dictionary"><thead><tr><th scope="col">Variable</th><th scope="col">Tipo</th><th scope="col">Qué representa y de dónde proviene</th></tr></thead><tbody><tr><td data-label="Variable"><code>dias_prometidos</code></td><td data-label="Tipo">Numérica</td><td data-label="Qué representa y de dónde proviene">Orders: fecha estimada menos fecha de compra, en días</td></tr><tr><td data-label="Variable"><code>mes_compra</code></td><td data-label="Tipo">Numérica</td><td data-label="Qué representa y de dónde proviene">Orders: mes de la compra (1 a 12)</td></tr><tr><td data-label="Variable"><code>dia_semana_compra</code></td><td data-label="Tipo">Numérica</td><td data-label="Qué representa y de dónde proviene">Orders: día de la semana de la compra</td></tr><tr><td data-label="Variable"><code>dia_mes_compra</code></td><td data-label="Tipo">Numérica</td><td data-label="Qué representa y de dónde proviene">Orders: día del mes de la compra</td></tr><tr><td data-label="Variable"><code>hora_compra</code></td><td data-label="Tipo">Numérica</td><td data-label="Qué representa y de dónde proviene">Orders: hora de compra</td></tr><tr><td data-label="Variable"><code>compra_fin_semana</code></td><td data-label="Tipo">Numérica</td><td data-label="Qué representa y de dónde proviene">Orders: indicador sábado o domingo</td></tr></tbody></table></div>
+<h3>Productos y características del pedido (14)</h3>
+<div class="table-wrap"><table class="dictionary"><thead><tr><th scope="col">Variable</th><th scope="col">Tipo</th><th scope="col">Qué representa y de dónde proviene</th></tr></thead><tbody><tr><td data-label="Variable"><code>valor_productos</code></td><td data-label="Tipo">Numérica</td><td data-label="Qué representa y de dónde proviene">Items: suma del precio de los ítems del pedido</td></tr><tr><td data-label="Variable"><code>valor_flete</code></td><td data-label="Tipo">Numérica</td><td data-label="Qué representa y de dónde proviene">Items: suma de cargos de flete del pedido</td></tr><tr><td data-label="Variable"><code>precio_maximo</code></td><td data-label="Tipo">Numérica</td><td data-label="Qué representa y de dónde proviene">Items: mayor precio individual entre los ítems</td></tr><tr><td data-label="Variable"><code>cantidad_items</code></td><td data-label="Tipo">Numérica</td><td data-label="Qué representa y de dónde proviene">Items: número de filas de ítems del pedido</td></tr><tr><td data-label="Variable"><code>cantidad_productos</code></td><td data-label="Tipo">Numérica</td><td data-label="Qué representa y de dónde proviene">Items: cantidad de productos distintos</td></tr><tr><td data-label="Variable"><code>cantidad_vendedores</code></td><td data-label="Tipo">Numérica</td><td data-label="Qué representa y de dónde proviene">Items: cantidad de vendedores distintos</td></tr><tr><td data-label="Variable"><code>peso_total_g</code></td><td data-label="Tipo">Numérica</td><td data-label="Qué representa y de dónde proviene">Items + Products: suma de peso de los ítems, en gramos</td></tr><tr><td data-label="Variable"><code>peso_maximo_g</code></td><td data-label="Tipo">Numérica</td><td data-label="Qué representa y de dónde proviene">Items + Products: mayor peso entre los ítems</td></tr><tr><td data-label="Variable"><code>volumen_total_cm3</code></td><td data-label="Tipo">Numérica</td><td data-label="Qué representa y de dónde proviene">Items + Products: suma de alto × ancho × largo de los ítems</td></tr><tr><td data-label="Variable"><code>fotos_promedio</code></td><td data-label="Tipo">Numérica</td><td data-label="Qué representa y de dónde proviene">Products: promedio de fotos de los ítems</td></tr><tr><td data-label="Variable"><code>descripcion_promedio</code></td><td data-label="Tipo">Numérica</td><td data-label="Qué representa y de dónde proviene">Products: longitud promedio de descripciones</td></tr><tr><td data-label="Variable"><code>nombre_promedio</code></td><td data-label="Tipo">Numérica</td><td data-label="Qué representa y de dónde proviene">Products: longitud promedio de nombres</td></tr><tr><td data-label="Variable"><code>proporcion_flete</code></td><td data-label="Tipo">Numérica</td><td data-label="Qué representa y de dónde proviene">Items: flete / (precio + flete)</td></tr><tr><td data-label="Variable"><code>categoria_principal</code></td><td data-label="Tipo">Categórica</td><td data-label="Qué representa y de dónde proviene">Products + Categories: categoría del ítem de mayor precio</td></tr></tbody></table></div>
+<h3>Pagos (4)</h3>
+<div class="table-wrap"><table class="dictionary"><thead><tr><th scope="col">Variable</th><th scope="col">Tipo</th><th scope="col">Qué representa y de dónde proviene</th></tr></thead><tbody><tr><td data-label="Variable"><code>numero_pagos</code></td><td data-label="Tipo">Numérica</td><td data-label="Qué representa y de dónde proviene">Payments: cantidad de registros de pago del pedido</td></tr><tr><td data-label="Variable"><code>cuotas_maximas</code></td><td data-label="Tipo">Numérica</td><td data-label="Qué representa y de dónde proviene">Payments: número máximo de cuotas</td></tr><tr><td data-label="Variable"><code>valor_pagado</code></td><td data-label="Tipo">Numérica</td><td data-label="Qué representa y de dónde proviene">Payments: suma de importes pagados</td></tr><tr><td data-label="Variable"><code>tipo_pago_principal</code></td><td data-label="Tipo">Categórica</td><td data-label="Qué representa y de dónde proviene">Payments: medio de pago con mayor importe</td></tr></tbody></table></div>
+<h3>Cliente y vendedores (4)</h3>
+<div class="table-wrap"><table class="dictionary"><thead><tr><th scope="col">Variable</th><th scope="col">Tipo</th><th scope="col">Qué representa y de dónde proviene</th></tr></thead><tbody><tr><td data-label="Variable"><code>vendedor_mismo_estado</code></td><td data-label="Tipo">Numérica</td><td data-label="Qué representa y de dónde proviene">Customers + Sellers: coincidencia entre estados del cliente y del vendedor principal</td></tr><tr><td data-label="Variable"><code>vendedor_misma_ciudad</code></td><td data-label="Tipo">Numérica</td><td data-label="Qué representa y de dónde proviene">Customers + Sellers: coincidencia de ciudad y estado con el vendedor principal</td></tr><tr><td data-label="Variable"><code>customer_state</code></td><td data-label="Tipo">Categórica</td><td data-label="Qué representa y de dónde proviene">Customers: estado del cliente</td></tr><tr><td data-label="Variable"><code>estado_vendedor</code></td><td data-label="Tipo">Categórica</td><td data-label="Qué representa y de dónde proviene">Sellers: estado del vendedor principal</td></tr></tbody></table></div>
+<p>Las variables numéricas faltantes se imputan mediante mediana y se escalan. Las categóricas se imputan mediante la categoría más frecuente y se codifican con <em>One-Hot Encoding</em>. Estas transformaciones se ajustan solo con los datos de entrenamiento, dentro del <code>Pipeline</code>, para evitar que la validación aporte información al ajuste.</p>
+<div class="definition"><div class="definition-title">No todas las variables son igualmente informativas</div><p>La presencia de 28 variables no garantiza una predicción precisa. Algunas pueden aportar información redundante o tener relaciones no lineales con el retraso. La comparación de modelos y el análisis de errores permiten estudiar si la información disponible es suficiente y qué mejoras conviene evaluar más adelante.</p></div>
+</section>
+<section id="evaluacion">
+<h2>El laboratorio evalúa resultados y decisiones</h2>
+<p>La actividad comienza con un modelo de referencia que predice la clase mayoritaria (<code>DummyClassifier</code>). Después, cada estudiante construye una regresión logística y decide si utilizar <code>class_weight=None</code> o <code>'balanced'</code>. La decisión debe justificarse con los resultados obtenidos en validación.</p>
+<p>Las métricas se interpretan en conjunto. No se debe seleccionar el mejor modelo únicamente porque tenga una Accuracy alta.</p>
+<div class="table-wrap"><table class=""><thead><tr><th scope="col">Métrica</th><th scope="col">Cómo leerla en el reto</th></tr></thead><tbody><tr><td data-label="Métrica"><code>Accuracy</code></td><td data-label="Cómo leerla en el reto">Porcentaje de predicciones correctas. Puede ocultar problemas con la clase minoritaria.</td></tr><tr><td data-label="Métrica"><code>Precision</code></td><td data-label="Cómo leerla en el reto">De los pedidos pronosticados como tardíos, proporción que realmente se retrasó.</td></tr><tr><td data-label="Métrica"><code>Recall</code></td><td data-label="Cómo leerla en el reto">De los pedidos que efectivamente se retrasaron, proporción detectada por el modelo.</td></tr><tr><td data-label="Métrica"><code>F1</code></td><td data-label="Cómo leerla en el reto">Equilibrio entre Precision y Recall, sin incorporar por sí mismo costos de negocio.</td></tr><tr><td data-label="Métrica"><code>ROC-AUC</code></td><td data-label="Cómo leerla en el reto">Capacidad de ordenar ejemplos positivos y negativos considerando distintos umbrales.</td></tr><tr><td data-label="Métrica"><code>Average Precision (AP)</code></td><td data-label="Cómo leerla en el reto">Resumen de Precision y Recall sobre umbrales. Útil en este problema con clase minoritaria; interpretar junto con su prevalencia.</td></tr><tr><td data-label="Métrica"><code>MAE</code></td><td data-label="Cómo leerla en el reto">Error absoluto medio, en días, del ejemplo guiado de regresión.</td></tr></tbody></table></div>
+<p>Las actividades de análisis por segmentos comparan errores según el mes de compra y el estado del cliente. La actividad de costo utiliza un supuesto ilustrativo: R$ 8 por cada falso positivo y R$ 35 por cada falso negativo. Estos valores no representan costos verificados de Olist; sirven para discutir cómo una métrica estadística se traduce en una decisión empresarial.</p>
+<p>Las tres respuestas de negocio deben citar valores obtenidos del propio cuaderno de análisis. Se espera explicar qué revelan los resultados, sus limitaciones y qué hipótesis técnica puede ponerse a prueba durante la semana 13.</p>
+</section>
+<section id="verificacion">
+<h2>Verificar antes de entregar</h2>
+<p>El cuaderno de análisis contiene comprobaciones con <code>assert</code> que revisan tamaños de muestra y particiones, consistencia de predicciones, métricas y costo calculado. Su propósito es detectar errores habituales antes de que el profesor revise la entrega.</p>
+<ol>
+<li><strong>Reinicie y ejecute todas las celdas</strong> en orden, desde el inicio. El resultado debe obtenerse sin errores y sin depender de variables de ejecuciones anteriores.</li>
+<li><strong>Compruebe las cuatro actividades:</strong> entrenamiento, métricas, errores por segmento y costo empresarial. Mantenga los nombres de variables exigidos por el cuaderno de análisis.</li>
+<li><strong>Revise las respuestas de negocio:</strong> deben estar escritas en las celdas Markdown y sustentadas con resultados de su muestra.</li>
+<li><strong>Guarde el cuaderno de análisis</strong> dentro de <code>notebooks/</code> y registre commits que reflejen el avance realizado.</li>
+<li><strong>Agregue el JSON</strong> generado por el cuaderno de análisis en <code>reports/</code>. Para el estudiante 01, el archivo debe denominarse <code>S12_resultados_ID_01.json</code>.</li>
+</ol>
+<div class="note"><p>La autoverificación no equivale a calificación automática. Superar las aserciones comprueba condiciones técnicas mínimas. La evaluación también revisa las decisiones metodológicas, la interpretación individual, la consistencia del reporte y la evidencia conservada en GitHub.</p></div>
+<h3>Lo que debe encontrar el profesor</h3>
+<p>El repositorio individual debe permitir abrir el cuaderno de análisis, revisar el desarrollo, comprobar los resultados registrados, consultar el informe JSON y reconstruir los principales cambios mediante el historial de commits. No entregue capturas de pantalla como sustituto del cuaderno de análisis ejecutable.</p>
+<h3>Continuidad del desafío</h3>
+<p>La semana 12 establece la línea base. En la 13 se comparan mejoras y ajustes; en la 14 se estudia la validación estadística y la incertidumbre; en la 15 se experimenta con redes neuronales; y en la 16 se justifica la solución final sobre la partición de prueba reservada. La comparabilidad requiere no cambiar arbitrariamente la muestra ni las particiones entre retos.</p>
+</section>
+<hr/>
+<section id="referencias"><h2>Referencias bibliográficas y datos</h2>
+<ol class="references">
+<li id="ref-1">Olist. (2018). <em>Brazilian E-Commerce Public Dataset by Olist</em> [Conjunto de datos]. Kaggle. <a href="https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce" rel="noopener noreferrer" target="_blank">https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce</a>. Fuente primaria sobre las tablas y el alcance del caso.</li>
+<li id="ref-2">Aljohani, K. (2024). The Role of Last-Mile Delivery Quality and Satisfaction in Online Retail Experience: An Empirical Analysis. <em>Sustainability, 16</em>(11), 4743. <a href="https://doi.org/10.3390/su16114743" rel="noopener noreferrer" target="_blank">https://doi.org/10.3390/su16114743</a>.</li>
+<li id="ref-3">Ahmed Tarek. (s. f.). <em>Does Late Delivery Cost Us Repeat Customers? A SQL-Driven Product Investigation</em> [Análisis exploratorio independiente de Olist]. GitHub. <a href="https://github.com/AhmedTarek104/noon-delivery-sql-investigation/blob/master/CASE_STUDY.md" rel="noopener noreferrer" target="_blank">Consultar análisis</a>. Los porcentajes de las figuras 1 y 2 se toman de este trabajo; no son estadísticas oficiales publicadas por Olist ni resultados verificados de forma independiente en esta guía.</li>
+<li id="ref-4">Repositorio de datos para reproducibilidad. <em>Brazilian-E-Commerce-Public-Dataset-by-Olist</em>, copia con revisión fija <code>fa0cc6d1aff713d3c8b9a1e633b56889881848bf</code>. <a href="https://github.com/spdrio/Brazilian-E-Commerce-Public-Dataset-by-Olist/tree/fa0cc6d1aff713d3c8b9a1e633b56889881848bf/files" rel="noopener noreferrer" target="_blank">Consultar archivos CSV</a>.</li>
+</ol></section>
+</article>
+<footer><div>Data Analytics ML Challenge 2026-2 | Universidad Central | Laboratorio 1, semana 12.<br/>Material académico de apoyo. Profesor: Elias Buitrago Bolivar.</div></footer>
+</body>
+</html>
