@@ -39,17 +39,8 @@ def ejecutar(id_estudiante):
     ruta_analisis = ROOT / 'reports' / f'S12_analisis_ID_{nombre}.md'
     if not ruta_analisis.exists():
         raise RuntimeError('El notebook termino sin generar el analisis esperado.')
-    texto = ruta_analisis.read_text(encoding='utf-8')
-    partes = re.split(r'(?m)^## Pregunta ([123])\s*$', texto)
-    if len(partes) == 7:
-        cuestiones = [partes[2].strip(), partes[4].strip(), partes[6].split('## Limitaciones')[0].strip()]
-        for indice_celda, pregunta, borrador in zip((26, 27, 28), (1, 2, 3), cuestiones):
-            fuente_actual = notebook.cells[indice_celda].source
-            cabecera = '## 6. Interpretacion de negocio\n\n' if pregunta == 1 else ''
-            encabezado = fuente_actual.split('**')[1] if '**' in fuente_actual else f'Pregunta {pregunta}'
-            notebook.cells[indice_celda].source = (
-                cabecera + f'**{encabezado}**\n\n'
-                'Respuesta calculada (borrador para revisar y sustentar):\n\n' + borrador)
+    # Mantener las respuestas redactadas y sustentadas por la estudiante.
+    # El análisis automático se genera como reporte aparte, sin sobrescribirlas.
     nbformat.validate(notebook)
     nbformat.write(notebook, NB_PATH)
     print(f'Listo: {NB_PATH.relative_to(ROOT)}', flush=True)
