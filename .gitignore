@@ -1,0 +1,19 @@
+# Datos de Olist: no publicar archivos originales ni particiones grandes.
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+
+# Python, notebooks y entornos.
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.pytest_cache/
+.venv/
+venv/
+.env
+.DS_Store
+Thumbs.db
+
+# Ejecuciones temporales.
+*.log
