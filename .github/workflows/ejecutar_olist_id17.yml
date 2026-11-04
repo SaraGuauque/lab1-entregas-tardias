@@ -1,0 +1,40 @@
+name: Generar resultados reales - ID 17
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  ejecutar-laboratorio:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - name: Descargar repositorio
+        uses: actions/checkout@v4
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Instalar dependencias
+        run: python -m pip install -r requirements.txt
+      - name: Pruebas de consistencia
+        run: python -m pytest -q
+      - name: Ejecutar notebook con datos reales Olist
+        env:
+          MPLBACKEND: Agg
+        run: python scripts/ejecutar_lab.py --id 17
+      - name: Validar ID, muestra, metricas y evidencias
+        run: python scripts/verificar_entrega.py
+      - name: Registrar resultados en el repositorio
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add notebooks/S12_ML_Challenge.ipynb reports/
+          if ! git diff --cached --quiet; then
+            git commit -m "S12: resultados verificados Olist ID 17 y analisis"
+            git push
+          else
+            echo "No hay nuevos archivos para registrar."
