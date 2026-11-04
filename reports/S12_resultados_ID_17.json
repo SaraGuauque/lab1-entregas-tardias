@@ -1,0 +1,105 @@
+{
+  "laboratorio": "S12",
+  "id_estudiante": "17",
+  "semilla": 1017,
+  "timestamp_utc": "2026-11-04T12:34:38.277036+00:00",
+  "python": "3.11.17",
+  "pandas": "2.3.3",
+  "numpy": "2.4.6",
+  "sklearn": "1.9.1",
+  "n_muestra": 35000,
+  "n_train": 24500,
+  "n_valid": 5250,
+  "n_test": 5250,
+  "n_variables": 28,
+  "columnas_predictoras": [
+    "dias_prometidos",
+    "mes_compra",
+    "dia_semana_compra",
+    "dia_mes_compra",
+    "hora_compra",
+    "compra_fin_semana",
+    "valor_productos",
+    "valor_flete",
+    "precio_maximo",
+    "cantidad_items",
+    "cantidad_productos",
+    "cantidad_vendedores",
+    "peso_total_g",
+    "peso_maximo_g",
+    "volumen_total_cm3",
+    "fotos_promedio",
+    "descripcion_promedio",
+    "nombre_promedio",
+    "numero_pagos",
+    "cuotas_maximas",
+    "valor_pagado",
+    "vendedor_mismo_estado",
+    "vendedor_misma_ciudad",
+    "proporcion_flete",
+    "customer_state",
+    "estado_vendedor",
+    "categoria_principal",
+    "tipo_pago_principal"
+  ],
+  "fuente_olist_commit": "fa0cc6d1aff713d3c8b9a1e633b56889881848bf",
+  "tasa_tardias_muestra": 0.06774285714285715,
+  "huella_muestra": "55ced66ce4f4",
+  "peso_clases": "balanced",
+  "modelo_seleccionado": "balanced",
+  "metricas_referencia": {
+    "accuracy": 0.9323809523809524,
+    "recall": 0.0,
+    "f1": 0.0
+  },
+  "comparacion_ponderacion": [
+    {
+      "configuracion": "sin_ponderacion",
+      "accuracy": 0.9321904761904762,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "roc_auc": 0.6885692500251767,
+      "ap": 0.13475730448097098,
+      "fp": 1,
+      "fn": 355,
+      "costo_brl": 12433
+    },
+    {
+      "configuracion": "balanced",
+      "accuracy": 0.6521904761904762,
+      "precision": 0.11022787493375728,
+      "recall": 0.5859154929577465,
+      "f1": 0.1855486173059768,
+      "roc_auc": 0.683835474542865,
+      "ap": 0.13094978708044896,
+      "fp": 1679,
+      "fn": 147,
+      "costo_brl": 18577
+    }
+  ],
+  "matriz_confusion_validacion": [
+    [
+      3216,
+      1679
+    ],
+    [
+      147,
+      208
+    ]
+  ],
+  "falsos_positivos": 1679,
+  "falsos_negativos": 147,
+  "costo_referencia_brl": 12425.0,
+  "interpretacion_costos": "Supuestos didacticos: FP=R$8; FN=R$35",
+  "metricas": {
+    "accuracy": 0.6521904761904762,
+    "precision": 0.11022787493375728,
+    "recall": 0.5859154929577465,
+    "f1": 0.1855486173059768,
+    "roc_auc": 0.683835474542865,
+    "ap": 0.13094978708044896
+  },
+  "costo_errores_brl": 18577.0,
+  "mae_regresion": 5.219023702245218
+}
