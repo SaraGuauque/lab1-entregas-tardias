@@ -55,7 +55,10 @@ def verificar():
         path = ROOT / name
         assert path.is_file() and path.stat().st_size > 0, f"Falta archivo: {name}"
     texto = (ROOT / "reports/S14_analisis_ID_17.md").read_text(encoding="utf-8")
-    assert "## PCA" in texto and "## Cuatro modelos" in texto and "## Prueba KS" in texto
+    assert all(frase in texto for frase in (
+        "Interpretación personal de los resultados",
+        "PCA", "Cuatro modelos y decisión", "Prueba KS"
+    ))
 
     nb = nbformat.read(NOTEBOOK, as_version=4)
     celdas = [c for c in nb.cells if c.cell_type == "code"]
